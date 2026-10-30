@@ -59,8 +59,105 @@
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="css/style.css" />
+  <!-- ============================================================== -->
+  <!-- CONFIGURAÇÃO CENTRAL DE TRÁFEGO PAGO E RASTREAMENTO DE METAS -->
+  <!-- Meta Pixel (Facebook & Instagram Ads), Google Tag Manager, Google Ads & GA4 -->
+  <!-- Basta preencher os IDs abaixo quando iniciar as campanhas de tráfego pago -->
+  <!-- ============================================================== -->
+  <script>
+    window.TRACKING_CONFIG = {
+      // 1. Google Tag Manager (Recomendado - Gerencia todas as tags em um só lugar)
+      // Exemplo: 'GTM-XXXXXXX'
+      GTM_ID: '',
+
+      // 2. Meta Pixel (Facebook & Instagram Ads)
+      // Exemplo: '1234567890123456'
+      META_PIXEL_ID: '',
+
+      // 3. Google Analytics 4 (GA4)
+      // Exemplo: 'G-XXXXXXXXXX'
+      GA4_ID: '',
+
+      // 4. Google Ads (ID de Conversão / Remarketing)
+      // Exemplo: 'AW-XXXXXXXXXX'
+      GOOGLE_ADS_ID: '',
+
+      // Rótulo de Conversão do Google Ads para Leads de WhatsApp (Opcional)
+      // Exemplo: 'AbCdEfGhIjKlMnOpQrS'
+      GOOGLE_ADS_CONVERSION_LABEL: ''
+    };
+
+    // Helper Unificado de Disparo de Eventos de Conversão
+    window.trackEvent = function(eventName, params = {}) {
+      try {
+        // Disparo no Meta Pixel (Facebook/Instagram)
+        if (typeof fbq === 'function') {
+          fbq('track', eventName, params);
+        }
+        // Disparo no Google Analytics 4 / Google Ads (gtag)
+        if (typeof gtag === 'function') {
+          gtag('event', eventName, params);
+        }
+        // Disparo no Google Tag Manager (dataLayer)
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: eventName,
+          ...params
+        });
+        console.log(`[Tracking Event] ${eventName}:`, params);
+      } catch (err) {
+        console.warn('[Tracking Warning]', err);
+      }
+    };
+
+    // Inicialização Condicional (Não quebra o site se os IDs ainda não foram preenchidos)
+    // A) Google Tag Manager
+    if (window.TRACKING_CONFIG.GTM_ID && window.TRACKING_CONFIG.GTM_ID.startsWith('GTM-')) {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',window.TRACKING_CONFIG.GTM_ID);
+    }
+
+    // B) Meta Pixel
+    if (window.TRACKING_CONFIG.META_PIXEL_ID && window.TRACKING_CONFIG.META_PIXEL_ID.length > 5) {
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/pt_BR/fbevents.js');
+      fbq('init', window.TRACKING_CONFIG.META_PIXEL_ID);
+      fbq('track', 'PageView');
+    }
+
+    // C) Google Tag (GA4 / Google Ads)
+    const googleId = window.TRACKING_CONFIG.GA4_ID || window.TRACKING_CONFIG.GOOGLE_ADS_ID;
+    if (googleId && (googleId.startsWith('G-') || googleId.startsWith('AW-'))) {
+      const gScript = document.createElement('script');
+      gScript.async = true;
+      gScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + googleId;
+      document.head.appendChild(gScript);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      if (window.TRACKING_CONFIG.GA4_ID) gtag('config', window.TRACKING_CONFIG.GA4_ID);
+      if (window.TRACKING_CONFIG.GOOGLE_ADS_ID) gtag('config', window.TRACKING_CONFIG.GOOGLE_ADS_ID);
+    }
+  </script>
 </head>
 <body class="bg-[#FAF8F5] text-[#191B1A] antialiased selection:bg-[#C5A880] selection:text-white">
+  <!-- Google Tag Manager (noscript) - Ativado se GTM_ID for preenchido -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+
 
   <!-- Top Announcement Bar -->
   <div class="bg-[#141615] text-[#9EA3A0] text-xs py-2 px-4 text-center border-b border-white/10 flex items-center justify-center gap-2">

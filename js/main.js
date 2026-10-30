@@ -310,4 +310,75 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+  // ==============================================================
+  // RASTREAMENTO INTELIGENTE DE EVENTOS DE CONVERSÃO (TRÁFEGO PAGO)
+  // ==============================================================
+  
+  // 1. Rastreamento Global de Qualquer Clique em Link de WhatsApp
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com"]');
+    if (link) {
+      const label = link.getAttribute('aria-label') || link.innerText.trim() || 'WhatsApp Global';
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('Contact', {
+          event_category: 'Engajamento',
+          event_label: label,
+          channel: 'WhatsApp'
+        });
+      }
+    }
+  });
+
+  // 2. Rastreamento de Clique no CTA Principal do Header ("Solicitar Orçamento")
+  const headerOrcamentoBtn = document.querySelector('header a[href="#orcamento"]');
+  if (headerOrcamentoBtn) {
+    headerOrcamentoBtn.addEventListener('click', () => {
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('InitiateCheckout', {
+          event_category: 'Navegacao',
+          event_label: 'Header_Solicitar_Orcamento'
+        });
+      }
+    });
+  }
+
+  // 3. Rastreamento de Envio do Orçamento Guiado
+  const orderWpBtn = document.getElementById('finalOrderWhatsAppBtn');
+  if (orderWpBtn) {
+    orderWpBtn.addEventListener('click', () => {
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('Lead', {
+          event_category: 'Conversao_Alta',
+          event_label: 'Orcamento_Guiado_Enviado',
+          servico: currentOrder ? currentOrder.servico : '',
+          tipo_imovel: currentOrder ? currentOrder.tipoImovel : '',
+          area_m2: currentOrder ? currentOrder.area : '',
+          prazo: currentOrder ? currentOrder.prazo : '',
+          bairro: currentOrder ? currentOrder.bairro : '',
+          value: 1.0,
+          currency: 'BRL'
+        });
+      }
+    });
+  }
+
+  // 4. Rastreamento de Conclusão do Quiz de Regularização
+  const quizWpBtn = document.getElementById('quizWhatsAppBtn');
+  if (quizWpBtn) {
+    quizWpBtn.addEventListener('click', () => {
+      if (typeof window.trackEvent === 'function') {
+        window.trackEvent('Lead', {
+          event_category: 'Conversao_Media',
+          event_label: 'Quiz_Regularizacao_Concluido',
+          habite_se: quizAnswers ? quizAnswers.habiteSe : '',
+          reforma: quizAnswers ? quizAnswers.reforma : '',
+          objetivo: quizAnswers ? quizAnswers.objetivo : '',
+          value: 1.0,
+          currency: 'BRL'
+        });
+      }
+    });
+  }
+
 });
