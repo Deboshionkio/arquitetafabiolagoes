@@ -235,52 +235,45 @@
     </div>
   </div>
 
-  <section id="inicio" class="relative bg-[#141615] text-[#FAF8F5] min-h-[90vh] flex flex-col justify-between overflow-hidden">
+  <section id="inicio" class="relative bg-[#141615] text-[#FAF8F5] min-h-[92vh] flex flex-col justify-between overflow-hidden">
     
-    <!-- Background Image: A foto exata da casa aprovada pela Fabíola em alta definição com iluminação acolhedora -->
+    <!-- Background Image: A foto original da casa em altíssima definição, limpa de qualquer texto e com iluminação natural clara e acolhedora -->
     <div class="absolute inset-0 z-0">
       <img src="assets/hero-house-bg.jpg" 
            alt="Projeto Arquitetônico Contemporâneo Fabíola Góes" 
-           class="w-full h-full object-cover object-center brightness-[0.72] contrast-105" />
-      <!-- Gradiente sutil à esquerda para leitura perfeita da tipografia branca -->
-      <div class="absolute inset-0 bg-gradient-to-r from-[#141615] via-[#141615]/75 via-45% to-transparent"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#141615]/90 via-transparent to-black/30"></div>
+           class="w-full h-full object-cover object-center brightness-100 contrast-100" />
+      <!-- Filtro sutilíssimo apenas na lateral esquerda para contraste perfeito dos textos brancos sem escurecer a arquitetura da casa -->
+      <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 via-40% to-transparent pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
     </div>
 
     <!-- Hero Content: 2 Colunas (Texto à Esquerda // Foto Recortada da Fabíola à Direita) -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-6 flex-1 flex flex-col justify-center w-full">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-4 flex-1 flex flex-col justify-center w-full">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
         
-        <!-- Coluna Esquerda: Cópia e CTA Oficial idêntico ao Slide 1 -->
-        <div class="lg:col-span-7 pb-4 lg:pb-8 hero-fade-left">
+        <!-- Coluna Esquerda: Tagline, Título e CTA Oficial idênticos ao Mockup Aprovado -->
+        <div class="lg:col-span-7 pb-4 lg:pb-12 hero-fade-left">
           
           <!-- Badge Tagline Oficial -->
-          <div class="inline-flex items-center gap-2 mb-6 border-b border-stone-400/30 pb-2">
-            <span class="text-xs uppercase tracking-[0.28em] text-stone-300 font-semibold">
+          <div class="inline-flex items-center gap-2 mb-6 border-b border-white/20 pb-2">
+            <span class="text-xs uppercase tracking-[0.28em] text-white/90 font-semibold drop-shadow">
               — PROJETO · LICENCIAMENTO · REGULARIZAÇÃO · BELÉM
             </span>
           </div>
 
-          <!-- Headline Principal Oficial do Mockup -->
-          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.02] mb-6 font-sans">
+          <!-- Headline Principal Oficial -->
+          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.02] mb-8 font-sans drop-shadow-[0_3px_15px_rgba(0,0,0,0.7)]">
             Arquitetura<br />
             <span class="text-white font-light">que resolve.</span>
           </h1>
 
-          <p class="text-base sm:text-lg text-stone-300 font-light max-w-xl mb-8 leading-relaxed">
-            Do primeiro traço ao imóvel regularizado. Projetos modernos, alvarás sem burocracia e aprovação legal na Prefeitura de Belém.
-          </p>
-
-          <!-- Botão de Ação: Conheça os projetos com badge de seta circular -->
-          <div class="flex flex-wrap items-center gap-4">
-            <a href="#projetos" class="inline-flex items-center gap-3 bg-[#FAF8F5] text-[#141615] pl-7 pr-3 py-3 rounded-full text-sm sm:text-base font-semibold hover:bg-[#F97316] hover:text-white transition-all shadow-lg hover:shadow-xl group">
+          <!-- Botão de Ação: Conheça os projetos com badge de seta circular exatamente como no PDF -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#projetos" class="inline-flex items-center gap-3 bg-[#FAF8F5] text-[#141615] pl-7 pr-3 py-3 rounded-full text-sm sm:text-base font-semibold hover:bg-[#F97316] hover:text-white transition-all shadow-xl hover:shadow-2xl group">
               <span>Conheça os projetos</span>
-              <span class="w-8 h-8 rounded-full bg-[#141615] text-white group-hover:bg-white group-hover:text-[#F97316] flex items-center justify-center transition-colors">
+              <span class="w-8 h-8 rounded-full bg-[#141615] text-white group-hover:bg-white group-hover:text-[#F97316] flex items-center justify-center transition-colors shadow">
                 <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
               </span>
-            </a>
-            <a href="#orcamento" class="inline-flex items-center gap-2 border border-stone-400/50 text-stone-200 px-6 py-3 rounded-full text-sm sm:text-base font-medium hover:bg-white/10 transition-all backdrop-blur-sm">
-              <span>Simular Orçamento</span>
             </a>
           </div>
         </div>
@@ -289,7 +282,7 @@
         <div class="lg:col-span-5 relative flex flex-col items-center lg:items-end justify-end hero-fade-right">
           
           <!-- Frase de Destaque Oficial ao lado do braço da Fabíola (Exatamente como no slide aprovado) -->
-          <div class="hidden lg:block absolute -right-2 bottom-8 text-right z-20 pointer-events-none drop-shadow-md">
+          <div class="hidden lg:block absolute -right-2 bottom-8 text-right z-20 pointer-events-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
             <span class="text-sm text-stone-200 font-light block">Do primeiro traço</span>
             <span class="text-sm text-white font-bold block">ao imóvel regularizado.</span>
           </div>
