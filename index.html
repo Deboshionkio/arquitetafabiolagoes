@@ -1469,183 +1469,75 @@
   </div>
 
   <!-- Drawer / Painel Lateral de Controle -->
-  <div id="customizerPanel" class="customizer-panel closed fixed top-0 right-0 bottom-0 w-84 sm:w-96 max-w-[92vw] bg-[#141615] text-[#FAF8F5] z-50 shadow-2xl border-l border-stone-800 p-5 sm:p-6 flex flex-col justify-between overflow-y-auto">
+  <div id="customizerPanel" class="customizer-panel closed fixed top-0 right-0 bottom-0 w-80 max-w-full bg-[#141615] text-[#FAF8F5] z-50 shadow-2xl border-l border-stone-800 p-6 flex flex-col justify-between overflow-y-auto">
     <div>
-      <div class="flex items-center justify-between pb-4 border-b border-stone-800 mb-5">
+      <div class="flex items-center justify-between pb-4 border-b border-stone-800 mb-6">
         <div>
           <h3 class="font-bold text-sm text-white">Controle de Módulos</h3>
-          <p class="text-[11px] text-stone-400">Reordene com as setas ou oculte seções</p>
+          <p class="text-[11px] text-stone-400">Ative ou desative seções com 1 clique</p>
         </div>
-        <button id="closeCustomizerBtn" class="p-1.5 rounded-lg text-stone-400 hover:text-white hover:bg-stone-800 transition-colors" aria-label="Fechar painel">
+        <button id="closeCustomizerBtn" class="p-1 text-stone-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div id="modulesList" class="space-y-2.5 text-xs">
+      <div class="space-y-4 text-xs">
         
-        <!-- 1. Hero & Credenciais -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="inicio">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">1. Hero & Credenciais</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleHero" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">1. Hero & Credenciais</span>
+          <input type="checkbox" id="toggleHero" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 2. Serviços Acordeão -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="servicos">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">2. Serviços Acordeão</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleServicos" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">2. Serviços Acordeão</span>
+          <input type="checkbox" id="toggleServicos" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 3. Projetos & Antes/Depois -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="projetos">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">3. Projetos & Antes/Depois</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleProjetos" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">3. Projetos & Antes/Depois</span>
+          <input type="checkbox" id="toggleProjetos" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 4. Quiz de Regularização -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="regularizacao">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">4. Quiz de Regularização</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleQuiz" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">4. Quiz de Regularização</span>
+          <input type="checkbox" id="toggleQuiz" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 5. Orçamento Guiado -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="orcamento">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">5. Orçamento Guiado</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleOrcamento" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">5. Orçamento Guiado</span>
+          <input type="checkbox" id="toggleOrcamento" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 6. Como Funciona & Depoimentos -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="comofunciona">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">6. Como Funciona & Depoimentos</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleComoFunciona" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">6. Como Funciona & Depoimentos</span>
+          <input type="checkbox" id="toggleComoFunciona" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 7. Área de Cursos / Profissionais -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="profissionais">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">7. Área de Cursos / Profissionais</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleProfissionais" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">7. Área de Cursos / Profissionais</span>
+          <input type="checkbox" id="toggleProfissionais" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 8. Sobre a Arquiteta (Bio) -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="sobre">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">8. Sobre a Arquiteta (Bio)</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleSobre" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">8. Sobre a Arquiteta (Bio)</span>
+          <input type="checkbox" id="toggleSobre" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
-        <!-- 9. Contato & Localização -->
-        <div class="module-item flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 transition-all" data-target="contato">
-          <span class="font-medium text-stone-200 truncate pr-2 text-xs">9. Contato & Localização</span>
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" class="btn-move-up p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para cima" aria-label="Mover para cima">
-              <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-            </button>
-            <button type="button" class="btn-move-down p-1.5 rounded-lg bg-stone-800 hover:bg-[#F97316] text-stone-300 hover:text-white disabled:opacity-20 disabled:hover:bg-stone-800 disabled:hover:text-stone-300 disabled:cursor-not-allowed transition-colors" title="Mover para baixo" aria-label="Mover para baixo">
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-            </button>
-            <label class="cursor-pointer ml-1.5 flex items-center" title="Ativar ou desativar módulo">
-              <input type="checkbox" id="toggleContato" checked class="accent-[#C5A880] w-4 h-4 cursor-pointer" />
-            </label>
-          </div>
-        </div>
+        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
+          <span class="font-medium text-stone-200">9. Contato & Localização</span>
+          <input type="checkbox" id="toggleContato" checked class="accent-[#C5A880] w-4 h-4" />
+        </label>
 
       </div>
     </div>
 
-    <!-- Rodapé do Painel com Botão de Reset -->
-    <div class="pt-5 mt-6 border-t border-stone-800 flex flex-col gap-2.5">
-      <div class="flex items-center justify-between">
-        <span class="text-[11px] text-stone-400">Reordenação ao vivo</span>
-        <button id="resetOrderBtn" type="button" class="text-[11px] text-[#C5A880] hover:text-[#F97316] underline font-semibold transition-colors">
-          Restaurar Ordem Padrão
-        </button>
-      </div>
-      <p class="text-[10px] text-stone-500 leading-tight">
-        Alterne a ordem com as setas para testar ou apresentar novos fluxos de navegação em tempo real.
-      </p>
+    <div class="pt-6 border-t border-stone-800 text-[11px] text-stone-400">
+      Permite à Fabíola testar o site sem o Quiz, sem o Orçamento ou sem a Área de Cursos em tempo real!
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="js/main.js?v=3"></script>
+  <script src="js/main.js?v=2"></script>
   <script>
     // Inicializa os ícones do Lucide
     lucide.createIcons();

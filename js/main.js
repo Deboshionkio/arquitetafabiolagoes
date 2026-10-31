@@ -270,17 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updatePhoneMockup();
 
-  // 7. Gaveta de Personalização Interativa para a Fabíola (Demo Customizer & Mini Page Builder)
+  // 7. Gaveta de Personalização Interativa para a Fabíola (Demo Customizer)
   const toggleCustomizerBtn = document.getElementById('toggleCustomizerBtn');
   const customizerPanel = document.getElementById('customizerPanel');
   const closeCustomizerBtn = document.getElementById('closeCustomizerBtn');
-  const modulesContainer = document.getElementById('modulesList');
-  const defaultOrder = ['inicio', 'servicos', 'projetos', 'regularizacao', 'orcamento', 'comofunciona', 'profissionais', 'sobre', 'contato'];
 
   if (toggleCustomizerBtn && customizerPanel) {
     toggleCustomizerBtn.addEventListener('click', () => {
       customizerPanel.classList.toggle('closed');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
     });
   }
 
@@ -290,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Seção Toggles (Visibilidade)
+  // Seção Toggles
   const toggles = [
     { id: 'toggleHero', target: 'inicio' },
     { id: 'toggleServicos', target: 'servicos' },
@@ -308,122 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const section = document.getElementById(target);
     if (checkbox && section) {
       checkbox.addEventListener('change', () => {
-        section.style.display = checkbox.checked ? '' : 'none';
+        if (checkbox.checked) {
+          section.style.display = '';
+        } else {
+          section.style.display = 'none';
+        }
       });
     }
   });
-
-  // Reordenação de Seções em Tempo Real (Subir / Descer)
-  function updateArrowsState() {
-    if (!modulesContainer) return;
-    const items = modulesContainer.querySelectorAll('.module-item');
-    items.forEach((item, index) => {
-      const upBtn = item.querySelector('.btn-move-up');
-      const downBtn = item.querySelector('.btn-move-down');
-      if (upBtn) upBtn.disabled = (index === 0);
-      if (downBtn) downBtn.disabled = (index === items.length - 1);
-    });
-  }
-
-  function moveModule(item, direction) {
-    const targetId = item.getAttribute('data-target');
-    const section = document.getElementById(targetId);
-    if (!section || !modulesContainer) return;
-
-    if (direction === 'up') {
-      const prevItem = item.previousElementSibling;
-      if (prevItem) {
-        const prevTargetId = prevItem.getAttribute('data-target');
-        const prevSection = document.getElementById(prevTargetId);
-        if (prevSection && prevSection.parentNode) {
-          prevSection.parentNode.insertBefore(section, prevSection);
-          modulesContainer.insertBefore(item, prevItem);
-        }
-      }
-    } else if (direction === 'down') {
-      const nextItem = item.nextElementSibling;
-      if (nextItem) {
-        const nextTargetId = nextItem.getAttribute('data-target');
-        const nextSection = document.getElementById(nextTargetId);
-        if (nextSection && nextSection.parentNode) {
-          nextSection.parentNode.insertBefore(section, nextSection.nextSibling);
-          modulesContainer.insertBefore(item, nextItem.nextSibling);
-        }
-      }
-    }
-
-    updateArrowsState();
-    saveOrder();
-  }
-
-  function saveOrder() {
-    if (!modulesContainer) return;
-    const currentOrder = Array.from(modulesContainer.querySelectorAll('.module-item'))
-      .map(item => item.getAttribute('data-target'));
-    try {
-      localStorage.setItem('fg_sections_order', JSON.stringify(currentOrder));
-    } catch (e) {}
-  }
-
-  function applyOrder(orderArray) {
-    if (!Array.isArray(orderArray) || !orderArray.length || !modulesContainer) return;
-    const header = document.querySelector('header');
-    if (!header) return;
-
-    let previousNode = document.getElementById('mobileMenu') || header;
-
-    orderArray.forEach(targetId => {
-      const section = document.getElementById(targetId);
-      const item = modulesContainer.querySelector(`[data-target="${targetId}"]`);
-      if (section && section.parentNode) {
-        section.parentNode.insertBefore(section, previousNode.nextSibling);
-        previousNode = section;
-      }
-      if (item) {
-        modulesContainer.appendChild(item);
-      }
-    });
-
-    updateArrowsState();
-  }
-
-  function loadSavedOrder() {
-    try {
-      const saved = localStorage.getItem('fg_sections_order');
-      if (saved) {
-        const order = JSON.parse(saved);
-        applyOrder(order);
-      } else {
-        updateArrowsState();
-      }
-    } catch (e) {
-      updateArrowsState();
-    }
-  }
-
-  if (modulesContainer) {
-    modulesContainer.addEventListener('click', (e) => {
-      const upBtn = e.target.closest('.btn-move-up');
-      const downBtn = e.target.closest('.btn-move-down');
-      if (upBtn && !upBtn.disabled) {
-        const item = upBtn.closest('.module-item');
-        if (item) moveModule(item, 'up');
-      } else if (downBtn && !downBtn.disabled) {
-        const item = downBtn.closest('.module-item');
-        if (item) moveModule(item, 'down');
-      }
-    });
-  }
-
-  const resetOrderBtn = document.getElementById('resetOrderBtn');
-  if (resetOrderBtn) {
-    resetOrderBtn.addEventListener('click', () => {
-      try { localStorage.removeItem('fg_sections_order'); } catch (e) {}
-      applyOrder(defaultOrder);
-    });
-  }
-
-  loadSavedOrder();
 
   // ==============================================================
   // RASTREAMENTO INTELIGENTE DE EVENTOS DE CONVERSÃO (TRÁFEGO PAGO)
