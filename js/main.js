@@ -43,18 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 3. Filtro de Portfólio
+  // 3. Filtro de Portfólio (Paleta Oficial de Alto Contraste)
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
+
+  const activeClasses = ['bg-[#141615]', 'text-white', 'border-[#141615]', 'shadow-md'];
+  const inactiveClasses = ['bg-white', 'text-[#141615]', 'border-stone-300', 'shadow-sm'];
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => {
-        b.classList.remove('bg-white', 'text-black', 'border-white');
-        b.classList.add('bg-transparent', 'text-stone-300', 'border-stone-700');
+        b.classList.remove(...activeClasses);
+        b.classList.add(...inactiveClasses);
       });
-      btn.classList.add('bg-white', 'text-black', 'border-white');
-      btn.classList.remove('bg-transparent', 'text-stone-300', 'border-stone-700');
+      btn.classList.add(...activeClasses);
+      btn.classList.remove(...inactiveClasses);
 
       const filter = btn.getAttribute('data-filter');
 
