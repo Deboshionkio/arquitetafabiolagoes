@@ -72,40 +72,130 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Comparador Antes e Depois
+  // 4. Comparador Antes e Depois (Interativo Mobile & Desktop)
   const container = document.getElementById('beforeAfterContainer');
   const overlay = document.getElementById('beforeAfterOverlay');
   const slider = document.getElementById('beforeAfterSlider');
+  const btnAntes = document.getElementById('btnSlideAntes');
+  const btnDepois = document.getElementById('btnSlideDepois');
+  const btnReset = document.getElementById('btnSlideReset');
+  const sliderHint = document.getElementById('sliderHint');
 
   if (container && overlay && slider) {
     let isDragging = false;
+    let autoDemoDone = false;
+    let animTimeout = null;
 
-    const setPosition = (x) => {
-      const rect = container.getBoundingClientRect();
-      let offsetX = x - rect.left;
-      if (offsetX < 0) offsetX = 0;
-      if (offsetX > rect.width) offsetX = rect.width;
-      const percentage = (offsetX / rect.width) * 100;
-      overlay.style.width = `${percentage}%`;
-      slider.style.left = `${percentage}%`;
+    const hideHint = () => {
+      if (sliderHint && sliderHint.style.opacity !== '0') {
+        sliderHint.style.opacity = '0';
+        setTimeout(() => { if (sliderHint) sliderHint.style.display = 'none'; }, 700);
+      }
     };
 
-    slider.addEventListener('mousedown', () => isDragging = true);
-    window.addEventListener('mouseup', () => isDragging = false);
+    const setPosition = (percentage, animate = false) => {
+      if (percentage < 0) percentage = 0;
+      if (percentage > 100) percentage = 100;
+
+      if (animate) {
+        container.classList.add('animating');
+        clearTimeout(animTimeout);
+        animTimeout = setTimeout(() => {
+          container.classList.remove('animating');
+        }, 500);
+      } else {
+        container.classList.remove('animating');
+      }
+
+      container.style.setProperty('--ba-pos', `${percentage}%`);
+      overlay.style.width = `${percentage}%`;
+      slider.style.left = `${percentage}%`;
+
+      hideHint();
+    };
+
+    const handlePointerMove = (clientX) => {
+      const rect = container.getBoundingClientRect();
+      const offsetX = clientX - rect.left;
+      const percentage = (offsetX / rect.width) * 100;
+      setPosition(percentage, false);
+    };
+
+    // Suporte a arrasto ou clique em qualquer ponto do container
+    const startDrag = (e) => {
+      if (e.target.closest('button')) return; // Não interfere nos botões
+      isDragging = true;
+      slider.classList.add('active');
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      handlePointerMove(clientX);
+    };
+
+    const stopDrag = () => {
+      if (isDragging) {
+        isDragging = false;
+        slider.classList.remove('active');
+      }
+    };
+
+    container.addEventListener('mousedown', startDrag);
+    window.addEventListener('mouseup', stopDrag);
     window.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
-      setPosition(e.clientX);
+      handlePointerMove(e.clientX);
     });
 
-    // Touch support for mobile
-    slider.addEventListener('touchstart', () => isDragging = true, { passive: true });
-    window.addEventListener('touchend', () => isDragging = false);
+    container.addEventListener('touchstart', startDrag, { passive: true });
+    window.addEventListener('touchend', stopDrag);
     window.addEventListener('touchmove', (e) => {
       if (!isDragging) return;
       if (e.touches && e.touches[0]) {
-        setPosition(e.touches[0].clientX);
+        handlePointerMove(e.touches[0].clientX);
       }
     }, { passive: true });
+
+    // Botões de Ação para quem não quer arrastar
+    if (btnAntes) {
+      btnAntes.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setPosition(100, true); // Abre 100% da foto de Antes
+      });
+    }
+
+    if (btnDepois) {
+      btnDepois.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setPosition(0, true); // Abre 100% da foto de Depois
+      });
+    }
+
+    if (btnReset) {
+      btnReset.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setPosition(50, true); // Reseta para comparação 50/50
+      });
+    }
+
+    // Demonstração visual automática suave ao rolar até o elemento
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !autoDemoDone) {
+            autoDemoDone = true;
+            setTimeout(() => {
+              setPosition(32, true);
+              setTimeout(() => {
+                setPosition(68, true);
+                setTimeout(() => {
+                  setPosition(50, true);
+                }, 550);
+              }, 550);
+            }, 700);
+            observer.unobserve(container);
+          }
+        });
+      }, { threshold: 0.35 });
+      observer.observe(container);
+    }
   }
 
   // 5. Quiz de Regularização
