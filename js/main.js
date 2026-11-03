@@ -252,6 +252,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (previewPrazo) previewPrazo.innerText = orderState.prazo;
     if (previewNome) previewNome.innerText = orderState.nome || 'Visitante';
 
+    const wpFabiolaGreeting = document.getElementById('wpFabiolaGreeting');
+    if (wpFabiolaGreeting) {
+      const firstName = (orderState.nome && orderState.nome !== 'Visitante' && orderState.nome !== 'Cliente')
+        ? orderState.nome.trim().split(' ')[0]
+        : 'Visitante';
+      wpFabiolaGreeting.innerText = `Oi, ${firstName}!`;
+    }
+
     const message = `Olá, Fabíola! Vim pelo seu site e montei meu pedido de orçamento:%0A%0A` +
       `• *Serviço:* ${orderState.servico}%0A` +
       `• *Imóvel:* ${orderState.tipo} (${orderState.tipoSub}), ${orderState.metragem} m²%0A` +
@@ -311,18 +319,52 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const bairroInput = document.getElementById('orderBairroInput');
+  let bairroClearedOnce = false;
   if (bairroInput) {
+    bairroInput.addEventListener('focus', () => {
+      if (!bairroClearedOnce && bairroInput.value === 'Marco') {
+        bairroInput.value = '';
+        bairroClearedOnce = true;
+      }
+    });
     bairroInput.addEventListener('input', (e) => {
+      bairroClearedOnce = true;
       orderState.bairro = e.target.value || 'Belém';
       updatePhoneMockup();
     });
   }
 
   const nameInput = document.getElementById('orderNameInput');
+  const nameCta = document.getElementById('orderNameCta');
+  let nameClearedOnce = false;
+
   if (nameInput) {
+    nameInput.addEventListener('focus', () => {
+      if (!nameClearedOnce && nameInput.value === 'Ana Souza') {
+        nameInput.value = '';
+        nameClearedOnce = true;
+        if (nameCta) nameCta.style.opacity = '0';
+        orderState.nome = '';
+        updatePhoneMockup();
+      } else if (nameCta) {
+        nameCta.style.opacity = '0';
+      }
+    });
+
     nameInput.addEventListener('input', (e) => {
-      orderState.nome = e.target.value || 'Cliente';
+      nameClearedOnce = true;
+      if (nameCta) nameCta.style.opacity = '0';
+      orderState.nome = e.target.value.trim() || 'Visitante';
       updatePhoneMockup();
+    });
+
+    nameInput.addEventListener('blur', () => {
+      if (!nameInput.value.trim() && !nameClearedOnce) {
+        nameInput.value = 'Ana Souza';
+        if (nameCta) nameCta.style.opacity = '1';
+        orderState.nome = 'Ana Souza';
+        updatePhoneMockup();
+      }
     });
   }
 

@@ -940,7 +940,13 @@
           <!-- Step 4: Nome do Cliente -->
           <div>
             <label class="block text-xs uppercase tracking-wider font-bold text-stone-500 mb-2">Seu Nome</label>
-            <input id="orderNameInput" type="text" value="Ana Souza" placeholder="Digite seu nome" class="w-full p-3.5 rounded-xl border border-stone-300 bg-stone-50 text-stone-900 text-sm focus:outline-none" />
+            <div class="relative">
+              <input id="orderNameInput" type="text" value="Ana Souza" placeholder="Digite seu nome completo" class="w-full p-3.5 pr-48 rounded-xl border border-stone-300 bg-stone-50 text-stone-900 text-sm focus:outline-none focus:border-[#C5A880] focus:bg-white transition-all cursor-text" />
+              <div id="orderNameCta" class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-stone-400 font-mono flex items-center gap-1 select-none transition-opacity duration-200">
+                <span class="hidden sm:inline">&lt;= Insira seu nome aqui</span>
+                <span class="sm:hidden">&lt;= Seu nome</span>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -992,7 +998,7 @@
               <!-- Incoming Message (Fabíola Response) -->
               <div class="chat-bubble-in p-3 mr-4">
                 <p class="leading-relaxed">
-                  Oi, Ana! Recebi seus dados com sucesso. Vou analisar e te enviar uma proposta detalhada com carinho! 😊
+                  <span id="wpFabiolaGreeting">Oi, Ana!</span> Recebi seus dados com sucesso. Vou analisar e te enviar uma proposta detalhada com carinho! 😊
                 </p>
                 <div class="text-[9px] text-stone-400 text-right mt-1">
                   <span>10:47</span>
@@ -1485,7 +1491,7 @@
   </a>
 
   <!-- Scripts -->
-  <script src="js/main.js?v=8"></script>
+  <script src="js/main.js?v=9"></script>
   <script>
     // Inicializa os ícones do Lucide
     lucide.createIcons();
