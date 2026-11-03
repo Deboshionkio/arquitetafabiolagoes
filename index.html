@@ -670,23 +670,37 @@
              tabindex="0"
              aria-label="Alternar entre fotos de Antes e Depois da Casa Jardim">
           
-          <!-- Image 1: DEPOIS (Reformado / Concluído) - Base Layer -->
+          <!-- Image 1: DEPOIS (Reformado / Concluído) - Base Layer com Película Desembaçável -->
           <img id="imgDepois" 
                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" 
                alt="Depois - Reforma e Regularização Concluída" 
-               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+               class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
+               style="filter: blur(14px) brightness(0.85); transform: scale(1.06);" />
+
+          <!-- Frosted Glass Overlay (Película Embaçada) -->
+          <div id="frostedOverlay" 
+               class="absolute inset-0 backdrop-blur-md bg-stone-950/45 opacity-0 pointer-events-none transition-all duration-700 z-10 flex flex-col items-center justify-center p-4">
+            <div class="bg-black/85 backdrop-blur-xl border border-[#C5A880]/60 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 transform transition-transform duration-500 hover:scale-105">
+              <span class="text-base animate-bounce">🔒</span>
+              <span class="text-xs sm:text-sm font-semibold tracking-wide">Toque para desembaçar a reforma</span>
+              <span class="text-xs text-[#C5A880] font-bold">✨</span>
+            </div>
+            <span class="text-[11px] text-stone-300 mt-2 font-mono tracking-wider bg-black/60 px-3 py-0.5 rounded-full border border-white/10">
+              Projeto legalizado &amp; Habite-se
+            </span>
+          </div>
 
           <!-- Image 2: ANTES (Original / Imóvel Antigo) - Top Layer with Crossfade -->
           <img id="imgAntes" 
                src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" 
                alt="Antes - Imóvel Antigo sem Habite-se" 
-               class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105 opacity-100" />
+               class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105 opacity-100 z-15" />
 
           <!-- Gradient overlay for text legibility -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/35 pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/35 pointer-events-none z-20"></div>
 
           <!-- Top Header: Status Badge & Segmented Switcher -->
-          <div class="absolute top-3 inset-x-3 sm:top-4 sm:inset-x-4 flex items-center justify-between z-20 pointer-events-auto gap-2">
+          <div class="absolute top-3 inset-x-3 sm:top-4 sm:inset-x-4 flex items-center justify-between z-30 pointer-events-auto gap-2">
             <!-- Dynamic State Badge -->
             <div id="badgeState" 
                  class="flex items-center gap-1.5 bg-stone-900/90 text-[#C5A880] border border-[#C5A880]/30 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-500">
@@ -702,13 +716,13 @@
               </button>
               <button type="button" id="btnShowDepois" 
                       class="px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer">
-                Depois
+                Depois 🔒
               </button>
             </div>
           </div>
 
-          <!-- Floating Interactive Tip (desaparece ao interagir) -->
-          <div id="fadeToggleHint" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none transition-opacity duration-500">
+          <!-- Floating Interactive Tip (visível no início para incentivar o clique) -->
+          <div id="fadeToggleHint" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none transition-opacity duration-500">
             <span class="bg-black/75 backdrop-blur-md text-white text-[11px] sm:text-xs px-3.5 py-1.5 rounded-full border border-white/15 shadow-xl flex items-center gap-2">
               <span class="text-[#C5A880]">✨</span>
               <span>Toque na foto para alternar</span>
@@ -716,7 +730,7 @@
           </div>
 
           <!-- Bottom Caption -->
-          <div class="absolute bottom-3 left-4 right-4 sm:bottom-4 sm:left-6 sm:right-6 z-20 flex items-end justify-between pointer-events-none">
+          <div class="absolute bottom-3 left-4 right-4 sm:bottom-4 sm:left-6 sm:right-6 z-30 flex items-end justify-between pointer-events-none">
             <div class="pr-2">
               <span class="text-xs uppercase tracking-widest text-[#C5A880] font-mono block mb-0.5">05 · ANTES / DEPOIS</span>
               <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Casa Jardim</h3>
@@ -1573,7 +1587,7 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/main.js?v=4"></script>
+  <script src="js/main.js?v=5"></script>
   <script>
     // Inicializa os ícones do Lucide
     lucide.createIcons();
