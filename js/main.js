@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Comparador Antes e Depois (Transição com Película Desembaçável / Frosted Reveal)
+  // 4. Comparador Antes e Depois (Teaser Embaçado Automático + Revelação por Toque)
   const card = document.getElementById('beforeAfterCard');
   const imgAntes = document.getElementById('imgAntes');
   const imgDepois = document.getElementById('imgDepois');
@@ -89,12 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let isShowingDepois = false;
     let isUnblurred = false;
     let userInteracted = false;
+    let autoDemoTimer1 = null;
+    let autoDemoTimer2 = null;
 
     const hideHint = () => {
       if (fadeHint && fadeHint.style.opacity !== '0') {
         fadeHint.style.opacity = '0';
         setTimeout(() => { if (fadeHint) fadeHint.style.display = 'none'; }, 600);
       }
+    };
+
+    const cancelAutoDemo = () => {
+      if (autoDemoTimer1) clearTimeout(autoDemoTimer1);
+      if (autoDemoTimer2) clearTimeout(autoDemoTimer2);
     };
 
     const unblurDepois = () => {
@@ -125,15 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    const updateView = (showDepois) => {
+    const updateView = (showDepois, showBlurred = false) => {
       isShowingDepois = showDepois;
 
       if (showDepois) {
         // Mostra o DEPOIS
         imgAntes.style.opacity = '0';
 
-        if (!isUnblurred) {
-          // Se ainda não desembaçou, mostra com a película misteriosa
+        if (showBlurred && !isUnblurred) {
+          // Exibe embaçado durante a demonstração ou teaser
           if (frostedOverlay) {
             frostedOverlay.classList.remove('opacity-0', 'pointer-events-none');
             frostedOverlay.classList.add('opacity-100');
@@ -153,13 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
             badgeStateDot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
           }
           if (badgeStateText) {
-            badgeStateText.textContent = "Depois (Bloqueado 🔒)";
+            badgeStateText.textContent = "Depois (Embaçado 🔒)";
           }
           if (captionDescription) {
             captionDescription.textContent = "Toque na tela para desembaçar e revelar a reforma completa";
           }
         } else {
-          // Já foi desembaçado anteriormente
+          // Desembaçado / Nítido
           unblurDepois();
         }
 
@@ -179,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
           btnShowAntes.className = "px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-[#C5A880] text-stone-950 shadow-md cursor-pointer";
         }
         if (btnShowDepois) {
-          btnShowDepois.innerHTML = isUnblurred ? 'Depois ✨' : 'Depois 🔒';
+          btnShowDepois.innerHTML = isUnblurred ? 'Depois ✨' : 'Depois (Reformado)';
           btnShowDepois.className = "px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
         }
 
@@ -201,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toque ou clique no card
     card.addEventListener('click', (e) => {
       userInteracted = true;
+      cancelAutoDemo();
       hideHint();
 
       // Clique no botão Antes
@@ -212,34 +220,38 @@ document.addEventListener('DOMContentLoaded', () => {
       // Clique no botão Depois
       if (e.target.closest('#btnShowDepois')) {
         if (!isShowingDepois) {
-          updateView(true);
+          unblurDepois();
+          updateView(true, false);
         } else if (!isUnblurred) {
           unblurDepois();
         }
         return;
       }
 
-      // Clique geral no card
+      // Toque livre no card
       if (!isShowingDepois) {
-        // Está no Antes -> vai para o Depois (embaçado)
-        updateView(true);
+        // Estava no Antes -> vai para o Depois (desembaçado)
+        unblurDepois();
+        updateView(true, false);
       } else if (!isUnblurred) {
-        // Está no Depois embaçado -> DESEMBAÇA! (Revela a transformação)
+        // Estava no Depois embaçado (durante a demo do teaser) -> DESEMBAÇA!
         unblurDepois();
       } else {
-        // Já está no Depois nítido -> alterna de volta para o Antes para comparar
+        // Já estava no Depois nítido -> alterna para o Antes para comparar
         updateView(false);
       }
     });
 
-    // Acessibilidade por teclado (Enter / Espaço)
+    // Acessibilidade por teclado
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         userInteracted = true;
+        cancelAutoDemo();
         hideHint();
         if (!isShowingDepois) {
-          updateView(true);
+          unblurDepois();
+          updateView(true, false);
         } else if (!isUnblurred) {
           unblurDepois();
         } else {
@@ -247,6 +259,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+
+    // Demonstração automática: Mostra embaçado temporariamente; se não tocar, volta ao Antes e estabiliza
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !userInteracted) {
+            autoDemoTimer1 = setTimeout(() => {
+              if (!userInteracted) {
+                updateView(true, true); // Mostra o Depois EMBAÇADO (o teaser!)
+
+                autoDemoTimer2 = setTimeout(() => {
+                  if (!userInteracted) {
+                    // Estabiliza e retorna ao Antes suavemente
+                    updateView(false);
+                    isUnblurred = true; // Se o cliente não tocou, estabiliza no modo direto (Antes x Reformado)
+                  }
+                }, 2800);
+              }
+            }, 1000);
+
+            observer.unobserve(card);
+          }
+        });
+      }, { threshold: 0.45 });
+      observer.observe(card);
+    }
   }
 
   // 5. Quiz de Regularização
