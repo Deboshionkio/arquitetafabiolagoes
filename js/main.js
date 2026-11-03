@@ -72,129 +72,62 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Comparador Antes e Depois (Teaser Embaçado Automático + Revelação por Toque)
+  // 4. Comparador Antes e Depois (Modo Estático Executivo - Transição por Botão)
   const card = document.getElementById('beforeAfterCard');
   const imgAntes = document.getElementById('imgAntes');
-  const imgDepois = document.getElementById('imgDepois');
-  const frostedOverlay = document.getElementById('frostedOverlay');
   const btnShowAntes = document.getElementById('btnShowAntes');
   const btnShowDepois = document.getElementById('btnShowDepois');
+  const btnQuickToggle = document.getElementById('btnQuickToggle');
   const badgeState = document.getElementById('badgeState');
   const badgeStateDot = document.getElementById('badgeStateDot');
   const badgeStateText = document.getElementById('badgeStateText');
   const captionDescription = document.getElementById('captionDescription');
-  const fadeHint = document.getElementById('fadeToggleHint');
 
-  if (card && imgAntes && imgDepois) {
+  if (card && imgAntes) {
     let isShowingDepois = false;
-    let isUnblurred = false;
-    let userInteracted = false;
-    let autoDemoTimer1 = null;
-    let autoDemoTimer2 = null;
 
-    const hideHint = () => {
-      if (fadeHint && fadeHint.style.opacity !== '0') {
-        fadeHint.style.opacity = '0';
-        setTimeout(() => { if (fadeHint) fadeHint.style.display = 'none'; }, 600);
-      }
-    };
-
-    const cancelAutoDemo = () => {
-      if (autoDemoTimer1) clearTimeout(autoDemoTimer1);
-      if (autoDemoTimer2) clearTimeout(autoDemoTimer2);
-    };
-
-    const unblurDepois = () => {
-      isUnblurred = true;
-      if (frostedOverlay) {
-        frostedOverlay.classList.remove('opacity-100', 'pointer-events-auto');
-        frostedOverlay.classList.add('opacity-0', 'pointer-events-none');
-      }
-      if (imgDepois) {
-        imgDepois.style.filter = 'blur(0px) brightness(1)';
-        imgDepois.style.transform = 'scale(1)';
-      }
-      if (btnShowDepois) {
-        btnShowDepois.innerHTML = 'Depois ✨';
-        btnShowDepois.className = "px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-900/50 cursor-pointer";
-      }
-      if (badgeState) {
-        badgeState.className = "flex items-center gap-1.5 bg-emerald-600/95 text-white border border-emerald-400/40 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg shadow-emerald-900/30 transition-all duration-500";
-      }
-      if (badgeStateDot) {
-        badgeStateDot.className = "w-2 h-2 rounded-full bg-white animate-ping";
-      }
-      if (badgeStateText) {
-        badgeStateText.textContent = "Depois (Concluído & Regularizado)";
-      }
-      if (captionDescription) {
-        captionDescription.textContent = "Reforma concluída, ampliação legalizada e Habite-se emitido";
-      }
-    };
-
-    const updateView = (showDepois, showBlurred = false) => {
+    const setView = (showDepois) => {
       isShowingDepois = showDepois;
 
       if (showDepois) {
-        // Mostra o DEPOIS
+        // Revela a foto do DEPOIS (Reforma e Habite-se)
         imgAntes.style.opacity = '0';
 
-        if (showBlurred && !isUnblurred) {
-          // Exibe embaçado durante a demonstração ou teaser
-          if (frostedOverlay) {
-            frostedOverlay.classList.remove('opacity-0', 'pointer-events-none');
-            frostedOverlay.classList.add('opacity-100');
-          }
-          if (imgDepois) {
-            imgDepois.style.filter = 'blur(14px) brightness(0.85)';
-            imgDepois.style.transform = 'scale(1.06)';
-          }
-          if (btnShowDepois) {
-            btnShowDepois.innerHTML = 'Depois 🔒';
-            btnShowDepois.className = "px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-amber-600 text-white shadow-md shadow-amber-900/50 cursor-pointer";
-          }
-          if (badgeState) {
-            badgeState.className = "flex items-center gap-1.5 bg-amber-900/90 text-amber-300 border border-amber-500/40 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-500";
-          }
-          if (badgeStateDot) {
-            badgeStateDot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
-          }
-          if (badgeStateText) {
-            badgeStateText.textContent = "Depois (Embaçado 🔒)";
-          }
-          if (captionDescription) {
-            captionDescription.textContent = "Toque na tela para desembaçar e revelar a reforma completa";
-          }
-        } else {
-          // Desembaçado / Nítido
-          unblurDepois();
-        }
-
-        if (btnShowAntes) {
-          btnShowAntes.className = "px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
-        }
-      } else {
-        // Mostra o ANTES (Original)
-        imgAntes.style.opacity = '1';
-
-        if (frostedOverlay) {
-          frostedOverlay.classList.remove('opacity-100');
-          frostedOverlay.classList.add('opacity-0', 'pointer-events-none');
-        }
-
-        if (btnShowAntes) {
-          btnShowAntes.className = "px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-[#C5A880] text-stone-950 shadow-md cursor-pointer";
-        }
         if (btnShowDepois) {
-          btnShowDepois.innerHTML = isUnblurred ? 'Depois ✨' : 'Depois (Reformado)';
-          btnShowDepois.className = "px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
+          btnShowDepois.className = "px-3.5 sm:px-4 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-900/50 cursor-pointer";
+        }
+        if (btnShowAntes) {
+          btnShowAntes.className = "px-3.5 sm:px-4 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
         }
 
         if (badgeState) {
-          badgeState.className = "flex items-center gap-1.5 bg-stone-900/90 text-[#C5A880] border border-[#C5A880]/30 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-500";
+          badgeState.className = "flex items-center gap-1.5 bg-emerald-600/95 text-white border border-emerald-400/40 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg shadow-emerald-900/30 transition-all duration-300";
         }
         if (badgeStateDot) {
-          badgeStateDot.className = "w-2 h-2 rounded-full bg-[#C5A880] animate-pulse";
+          badgeStateDot.className = "w-2 h-2 rounded-full bg-white";
+        }
+        if (badgeStateText) {
+          badgeStateText.textContent = "Depois (Concluído)";
+        }
+        if (captionDescription) {
+          captionDescription.textContent = "Reforma concluída, ampliação legalizada e Habite-se emitido";
+        }
+      } else {
+        // Retorna à foto do ANTES (Original)
+        imgAntes.style.opacity = '1';
+
+        if (btnShowAntes) {
+          btnShowAntes.className = "px-3.5 sm:px-4 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-[#C5A880] text-stone-950 shadow-md cursor-pointer";
+        }
+        if (btnShowDepois) {
+          btnShowDepois.className = "px-3.5 sm:px-4 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
+        }
+
+        if (badgeState) {
+          badgeState.className = "flex items-center gap-1.5 bg-stone-900/90 text-[#C5A880] border border-[#C5A880]/30 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-300";
+        }
+        if (badgeStateDot) {
+          badgeStateDot.className = "w-2 h-2 rounded-full bg-[#C5A880]";
         }
         if (badgeStateText) {
           badgeStateText.textContent = "Antes (Original)";
@@ -205,86 +138,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // Toque ou clique no card
-    card.addEventListener('click', (e) => {
-      userInteracted = true;
-      cancelAutoDemo();
-      hideHint();
-
-      // Clique no botão Antes
-      if (e.target.closest('#btnShowAntes')) {
-        updateView(false);
-        return;
-      }
-
-      // Clique no botão Depois
-      if (e.target.closest('#btnShowDepois')) {
-        if (!isShowingDepois) {
-          unblurDepois();
-          updateView(true, false);
-        } else if (!isUnblurred) {
-          unblurDepois();
-        }
-        return;
-      }
-
-      // Toque livre no card
-      if (!isShowingDepois) {
-        // Estava no Antes -> vai para o Depois (desembaçado)
-        unblurDepois();
-        updateView(true, false);
-      } else if (!isUnblurred) {
-        // Estava no Depois embaçado (durante a demo do teaser) -> DESEMBAÇA!
-        unblurDepois();
-      } else {
-        // Já estava no Depois nítido -> alterna para o Antes para comparar
-        updateView(false);
-      }
-    });
-
-    // Acessibilidade por teclado
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        userInteracted = true;
-        cancelAutoDemo();
-        hideHint();
-        if (!isShowingDepois) {
-          unblurDepois();
-          updateView(true, false);
-        } else if (!isUnblurred) {
-          unblurDepois();
-        } else {
-          updateView(false);
-        }
-      }
-    });
-
-    // Demonstração automática: Mostra embaçado temporariamente; se não tocar, volta ao Antes e estabiliza
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !userInteracted) {
-            autoDemoTimer1 = setTimeout(() => {
-              if (!userInteracted) {
-                updateView(true, true); // Mostra o Depois EMBAÇADO (o teaser!)
-
-                autoDemoTimer2 = setTimeout(() => {
-                  if (!userInteracted) {
-                    // Estabiliza e retorna ao Antes suavemente
-                    updateView(false);
-                    isUnblurred = true; // Se o cliente não tocou, estabiliza no modo direto (Antes x Reformado)
-                  }
-                }, 2800);
-              }
-            }, 1000);
-
-            observer.unobserve(card);
-          }
-        });
-      }, { threshold: 0.45 });
-      observer.observe(card);
+    // Ações de clique exclusivas e limpas
+    if (btnShowAntes) {
+      btnShowAntes.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setView(false);
+      });
     }
+
+    if (btnShowDepois) {
+      btnShowDepois.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setView(true);
+      });
+    }
+
+    if (btnQuickToggle) {
+      btnQuickToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setView(!isShowingDepois);
+      });
+    }
+
+    // Clique direto no card também alterna de forma rápida
+    card.addEventListener('click', () => {
+      setView(!isShowingDepois);
+    });
   }
 
   // 5. Quiz de Regularização
