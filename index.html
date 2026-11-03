@@ -1484,86 +1484,8 @@
     </div>
   </a>
 
-  <!-- BOTÃO E PAINEL FLUTUANTE DE PERSONALIZAÇÃO (POSICIONADO À ESQUERDA PARA NÃO OBSTRUIR O WHATSAPP) -->
-  <!-- ============================================================== -->
-  <div class="fixed bottom-6 left-6 z-40 hidden md:block">
-    <button id="toggleCustomizerBtn" 
-            class="bg-[#141615]/90 text-[#C5A880] border border-[#C5A880]/40 shadow-2xl px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:bg-stone-900 transition-all backdrop-blur-md">
-      <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
-      <span>Ajustar Seções</span>
-    </button>
-  </div>
-
-  <!-- Drawer / Painel Lateral de Controle -->
-  <div id="customizerPanel" class="hidden md:flex customizer-panel closed fixed top-0 right-0 bottom-0 w-80 max-w-full bg-[#141615] text-[#FAF8F5] z-50 shadow-2xl border-l border-stone-800 p-6 flex-col justify-between overflow-y-auto">
-    <div>
-      <div class="flex items-center justify-between pb-4 border-b border-stone-800 mb-6">
-        <div>
-          <h3 class="font-bold text-sm text-white">Controle de Módulos</h3>
-          <p class="text-[11px] text-stone-400">Ative ou desative seções com 1 clique</p>
-        </div>
-        <button id="closeCustomizerBtn" class="p-1 text-stone-400 hover:text-white">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="space-y-4 text-xs">
-        
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">1. Hero & Credenciais</span>
-          <input type="checkbox" id="toggleHero" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">2. Serviços Acordeão</span>
-          <input type="checkbox" id="toggleServicos" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">3. Projetos & Antes/Depois</span>
-          <input type="checkbox" id="toggleProjetos" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">4. Quiz de Regularização</span>
-          <input type="checkbox" id="toggleQuiz" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">5. Orçamento Guiado</span>
-          <input type="checkbox" id="toggleOrcamento" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">6. Como Funciona & Depoimentos</span>
-          <input type="checkbox" id="toggleComoFunciona" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">7. Área de Cursos / Profissionais</span>
-          <input type="checkbox" id="toggleProfissionais" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">8. Sobre a Arquiteta (Bio)</span>
-          <input type="checkbox" id="toggleSobre" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-        <label class="flex items-center justify-between p-2.5 rounded-xl bg-stone-900 border border-stone-800 cursor-pointer">
-          <span class="font-medium text-stone-200">9. Contato & Localização</span>
-          <input type="checkbox" id="toggleContato" checked class="accent-[#C5A880] w-4 h-4" />
-        </label>
-
-      </div>
-    </div>
-
-    <div class="pt-6 border-t border-stone-800 text-[11px] text-stone-400">
-      Permite à Fabíola testar o site sem o Quiz, sem o Orçamento ou sem a Área de Cursos em tempo real!
-    </div>
-  </div>
-
   <!-- Scripts -->
-  <script src="js/main.js?v=7"></script>
+  <script src="js/main.js?v=8"></script>
   <script>
     // Inicializa os ícones do Lucide
     lucide.createIcons();

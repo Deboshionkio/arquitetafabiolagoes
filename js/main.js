@@ -328,50 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updatePhoneMockup();
 
-  // 7. Gaveta de Personalização Interativa para a Fabíola (Demo Customizer)
-  const toggleCustomizerBtn = document.getElementById('toggleCustomizerBtn');
-  const customizerPanel = document.getElementById('customizerPanel');
-  const closeCustomizerBtn = document.getElementById('closeCustomizerBtn');
-
-  if (toggleCustomizerBtn && customizerPanel) {
-    toggleCustomizerBtn.addEventListener('click', () => {
-      customizerPanel.classList.toggle('closed');
-    });
-  }
-
-  if (closeCustomizerBtn && customizerPanel) {
-    closeCustomizerBtn.addEventListener('click', () => {
-      customizerPanel.classList.add('closed');
-    });
-  }
-
-  // Seção Toggles
-  const toggles = [
-    { id: 'toggleHero', target: 'inicio' },
-    { id: 'toggleServicos', target: 'servicos' },
-    { id: 'toggleProjetos', target: 'projetos' },
-    { id: 'toggleQuiz', target: 'regularizacao' },
-    { id: 'toggleOrcamento', target: 'orcamento' },
-    { id: 'toggleComoFunciona', target: 'comofunciona' },
-    { id: 'toggleProfissionais', target: 'profissionais' },
-    { id: 'toggleSobre', target: 'sobre' },
-    { id: 'toggleContato', target: 'contato' },
-  ];
-
-  toggles.forEach(({ id, target }) => {
-    const checkbox = document.getElementById(id);
-    const section = document.getElementById(target);
-    if (checkbox && section) {
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          section.style.display = '';
-        } else {
-          section.style.display = 'none';
-        }
-      });
-    }
-  });
-
   // ==============================================================
   // RASTREAMENTO INTELIGENTE DE EVENTOS DE CONVERSÃO (TRÁFEGO PAGO)
   // ==============================================================
