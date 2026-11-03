@@ -147,7 +147,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/style.css?v=2" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body class="bg-[#FAF8F5] text-[#191B1A] antialiased selection:bg-[#C5A880] selection:text-white">
 
@@ -663,68 +663,73 @@
         </div>
 
         <!-- Card 5: COMPARADOR ANTES / DEPOIS (Página 3 - Casa Jardim) -->
-        <div class="project-card lg:col-span-2 group relative rounded-2xl overflow-hidden bg-stone-900 border border-white/10 aspect-[16/9] md:aspect-auto h-[350px] md:h-auto" data-category="regularizacao">
+        <div id="beforeAfterCard" 
+             class="project-card lg:col-span-2 group relative rounded-2xl overflow-hidden bg-stone-900 border border-white/10 aspect-[16/9] md:aspect-auto h-[360px] md:h-auto cursor-pointer select-none" 
+             data-category="regularizacao"
+             role="button"
+             tabindex="0"
+             aria-label="Alternar entre fotos de Antes e Depois da Casa Jardim">
           
-          <!-- Interactive Before & After Slider Container -->
-          <div id="beforeAfterContainer" class="before-after-container w-full h-full relative" style="--ba-pos: 50%;">
-            
-            <!-- After (Background) -->
-            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" 
-                 alt="Depois - Reforma e Regularização Concluída" />
+          <!-- Image 1: DEPOIS (Reformado / Concluído) - Base Layer -->
+          <img id="imgDepois" 
+               src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" 
+               alt="Depois - Reforma e Regularização Concluída" 
+               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
 
-            <!-- Before (Overlay com clip-path) -->
-            <div id="beforeAfterOverlay" class="before-after-overlay">
-              <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" 
-                   alt="Antes - Imóvel Antigo sem Habite-se" />
+          <!-- Image 2: ANTES (Original / Imóvel Antigo) - Top Layer with Crossfade -->
+          <img id="imgAntes" 
+               src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" 
+               alt="Antes - Imóvel Antigo sem Habite-se" 
+               class="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105 opacity-100" />
+
+          <!-- Gradient overlay for text legibility -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/35 pointer-events-none"></div>
+
+          <!-- Top Header: Status Badge & Segmented Switcher -->
+          <div class="absolute top-3 inset-x-3 sm:top-4 sm:inset-x-4 flex items-center justify-between z-20 pointer-events-auto gap-2">
+            <!-- Dynamic State Badge -->
+            <div id="badgeState" 
+                 class="flex items-center gap-1.5 bg-stone-900/90 text-[#C5A880] border border-[#C5A880]/30 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-500">
+              <span id="badgeStateDot" class="w-2 h-2 rounded-full bg-[#C5A880] animate-pulse"></span>
+              <span id="badgeStateText">Antes (Original)</span>
             </div>
 
-            <!-- Draggable Divider Line -->
-            <div id="beforeAfterSlider" class="before-after-slider">
-              <div class="before-after-handle">
-                <i data-lucide="chevrons-left-right" class="w-5 h-5 text-stone-800"></i>
-              </div>
-            </div>
-
-            <!-- Top Responsive Interactive Action Buttons (Toque para Alternar) -->
-            <div class="absolute top-3 inset-x-3 sm:top-4 sm:inset-x-4 flex items-center justify-between z-30 pointer-events-auto gap-2">
-              <!-- Botão ANTES (Tocar abre 100% Antes) -->
-              <button type="button" id="btnSlideAntes" aria-label="Mostrar foto de Antes"
-                      class="group/btn flex items-center gap-1.5 bg-stone-950/85 hover:bg-stone-900 active:scale-95 text-stone-200 text-[10px] sm:text-xs uppercase px-2.5 sm:px-3.5 py-1.5 rounded-full font-bold tracking-wider backdrop-blur-md border border-white/20 transition-all shadow-lg cursor-pointer">
-                <span class="text-xs text-[#C5A880]">◀</span>
-                <span>Antes</span>
-                <span class="hidden sm:inline text-stone-400 font-normal">(Reforma)</span>
+            <!-- Segmented Pill Button Switcher -->
+            <div class="inline-flex p-1 rounded-full bg-black/65 backdrop-blur-md border border-white/20 shadow-xl">
+              <button type="button" id="btnShowAntes" 
+                      class="px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-[#C5A880] text-stone-950 shadow-md cursor-pointer">
+                Antes
               </button>
-
-              <!-- Botão 50/50 (Reset Comparativo) -->
-              <button type="button" id="btnSlideReset" aria-label="Comparar 50/50"
-                      class="flex items-center gap-1 bg-black/60 hover:bg-black/80 active:scale-95 text-stone-300 text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full border border-white/10 backdrop-blur-md transition-all shadow cursor-pointer">
-                <span>50/50</span>
-              </button>
-
-              <!-- Botão DEPOIS (Tocar abre 100% Depois) -->
-              <button type="button" id="btnSlideDepois" aria-label="Mostrar foto de Depois"
-                      class="group/btn flex items-center gap-1.5 bg-emerald-600/90 hover:bg-emerald-500 active:scale-95 text-white text-[10px] sm:text-xs uppercase px-2.5 sm:px-3.5 py-1.5 rounded-full font-bold tracking-wider backdrop-blur-md border border-emerald-400/30 transition-all shadow-lg cursor-pointer">
-                <span>Depois</span>
-                <span class="hidden sm:inline text-emerald-200 font-normal">(Concluído)</span>
-                <span class="text-xs text-emerald-200">▶</span>
+              <button type="button" id="btnShowDepois" 
+                      class="px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer">
+                Depois
               </button>
             </div>
-
-            <!-- Mobile Visual Instruction Hint -->
-            <div id="sliderHint" class="absolute top-12 sm:top-14 left-1/2 -translate-x-1/2 z-20 pointer-events-none opacity-90 transition-opacity duration-700">
-              <span class="bg-black/70 backdrop-blur-md text-white text-[10px] sm:text-xs px-3 py-1 rounded-full border border-white/10 shadow-sm flex items-center gap-1 whitespace-nowrap">
-                <span>👆</span> Toque nos botões ou arraste a linha
-              </span>
-            </div>
-
           </div>
 
-          <!-- Bottom caption -->
-          <div class="absolute bottom-3 left-4 sm:bottom-4 sm:left-6 z-20 pointer-events-none">
-            <span class="text-xs uppercase tracking-widest text-[#C5A880] font-mono block">05 · ANTES / DEPOIS</span>
-            <h3 class="text-lg sm:text-xl font-bold text-white">Casa Jardim</h3>
-            <p class="text-xs text-stone-300">Reforma, ampliação e habite-se · Belém, PA</p>
+          <!-- Floating Interactive Tip (desaparece ao interagir) -->
+          <div id="fadeToggleHint" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none transition-opacity duration-500">
+            <span class="bg-black/75 backdrop-blur-md text-white text-[11px] sm:text-xs px-3.5 py-1.5 rounded-full border border-white/15 shadow-xl flex items-center gap-2">
+              <span class="text-[#C5A880]">✨</span>
+              <span>Toque na foto para alternar</span>
+            </span>
           </div>
+
+          <!-- Bottom Caption -->
+          <div class="absolute bottom-3 left-4 right-4 sm:bottom-4 sm:left-6 sm:right-6 z-20 flex items-end justify-between pointer-events-none">
+            <div class="pr-2">
+              <span class="text-xs uppercase tracking-widest text-[#C5A880] font-mono block mb-0.5">05 · ANTES / DEPOIS</span>
+              <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Casa Jardim</h3>
+              <p id="captionDescription" class="text-xs text-stone-300 transition-colors duration-500 line-clamp-1 sm:line-clamp-none">
+                Imóvel irregular antes da consultoria e projeto de adequação
+              </p>
+            </div>
+            <!-- Click visual indicator icon -->
+            <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white border border-white/20 shadow-md group-hover:bg-[#C5A880] group-hover:text-stone-950 transition-all">
+              <i data-lucide="refresh-cw" class="w-4 h-4 transition-transform duration-500 group-hover:rotate-180"></i>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -1568,7 +1573,7 @@
   </div>
 
   <!-- Scripts -->
-  <script src="js/main.js?v=3"></script>
+  <script src="js/main.js?v=4"></script>
   <script>
     // Inicializa os ícones do Lucide
     lucide.createIcons();

@@ -72,129 +72,132 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Comparador Antes e Depois (Interativo Mobile & Desktop)
-  const container = document.getElementById('beforeAfterContainer');
-  const overlay = document.getElementById('beforeAfterOverlay');
-  const slider = document.getElementById('beforeAfterSlider');
-  const btnAntes = document.getElementById('btnSlideAntes');
-  const btnDepois = document.getElementById('btnSlideDepois');
-  const btnReset = document.getElementById('btnSlideReset');
-  const sliderHint = document.getElementById('sliderHint');
+  // 4. Comparador Antes e Depois (Transição Suave de Foto Inteira / Crossfade)
+  const card = document.getElementById('beforeAfterCard');
+  const imgAntes = document.getElementById('imgAntes');
+  const btnShowAntes = document.getElementById('btnShowAntes');
+  const btnShowDepois = document.getElementById('btnShowDepois');
+  const badgeState = document.getElementById('badgeState');
+  const badgeStateDot = document.getElementById('badgeStateDot');
+  const badgeStateText = document.getElementById('badgeStateText');
+  const captionDescription = document.getElementById('captionDescription');
+  const fadeHint = document.getElementById('fadeToggleHint');
 
-  if (container && overlay && slider) {
-    let isDragging = false;
-    let autoDemoDone = false;
-    let animTimeout = null;
+  if (card && imgAntes) {
+    let isShowingDepois = false;
+    let userInteracted = false;
+    let autoDemoExecuted = false;
 
     const hideHint = () => {
-      if (sliderHint && sliderHint.style.opacity !== '0') {
-        sliderHint.style.opacity = '0';
-        setTimeout(() => { if (sliderHint) sliderHint.style.display = 'none'; }, 700);
+      if (fadeHint && fadeHint.style.opacity !== '0') {
+        fadeHint.style.opacity = '0';
+        setTimeout(() => { if (fadeHint) fadeHint.style.display = 'none'; }, 600);
       }
     };
 
-    const setPosition = (percentage, animate = false) => {
-      if (percentage < 0) percentage = 0;
-      if (percentage > 100) percentage = 100;
+    const updateView = (showDepois) => {
+      isShowingDepois = showDepois;
 
-      if (animate) {
-        container.classList.add('animating');
-        clearTimeout(animTimeout);
-        animTimeout = setTimeout(() => {
-          container.classList.remove('animating');
-        }, 500);
+      if (showDepois) {
+        // Transição para DEPOIS (Fade suave revelando o projeto concluído)
+        imgAntes.style.opacity = '0';
+        
+        // Estilo dos botões
+        if (btnShowDepois) {
+          btnShowDepois.className = "px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-900/50 cursor-pointer";
+        }
+        if (btnShowAntes) {
+          btnShowAntes.className = "px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
+        }
+
+        // Badge de status
+        if (badgeState) {
+          badgeState.className = "flex items-center gap-1.5 bg-emerald-600/95 text-white border border-emerald-400/40 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg shadow-emerald-900/30 transition-all duration-500";
+        }
+        if (badgeStateDot) {
+          badgeStateDot.className = "w-2 h-2 rounded-full bg-white";
+        }
+        if (badgeStateText) {
+          badgeStateText.textContent = "Depois (Concluído)";
+        }
+        if (captionDescription) {
+          captionDescription.textContent = "Reforma concluída, ampliação legalizada e Habite-se emitido";
+        }
       } else {
-        container.classList.remove('animating');
+        // Transição para ANTES (Fade suave revelando o imóvel original)
+        imgAntes.style.opacity = '1';
+
+        // Estilo dos botões
+        if (btnShowAntes) {
+          btnShowAntes.className = "px-3 sm:px-3.5 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-[#C5A880] text-stone-950 shadow-md cursor-pointer";
+        }
+        if (btnShowDepois) {
+          btnShowDepois.className = "px-3 sm:px-3.5 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
+        }
+
+        // Badge de status
+        if (badgeState) {
+          badgeState.className = "flex items-center gap-1.5 bg-stone-900/90 text-[#C5A880] border border-[#C5A880]/30 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-500";
+        }
+        if (badgeStateDot) {
+          badgeStateDot.className = "w-2 h-2 rounded-full bg-[#C5A880] animate-pulse";
+        }
+        if (badgeStateText) {
+          badgeStateText.textContent = "Antes (Original)";
+        }
+        if (captionDescription) {
+          captionDescription.textContent = "Imóvel irregular antes da consultoria e projeto de adequação";
+        }
       }
+    };
 
-      container.style.setProperty('--ba-pos', `${percentage}%`);
-      overlay.style.width = `${percentage}%`;
-      slider.style.left = `${percentage}%`;
-
+    // Toque ou clique em qualquer ponto do card alterna a foto!
+    card.addEventListener('click', (e) => {
+      userInteracted = true;
       hideHint();
-    };
-
-    const handlePointerMove = (clientX) => {
-      const rect = container.getBoundingClientRect();
-      const offsetX = clientX - rect.left;
-      const percentage = (offsetX / rect.width) * 100;
-      setPosition(percentage, false);
-    };
-
-    // Suporte a arrasto ou clique em qualquer ponto do container
-    const startDrag = (e) => {
-      if (e.target.closest('button')) return; // Não interfere nos botões
-      isDragging = true;
-      slider.classList.add('active');
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      handlePointerMove(clientX);
-    };
-
-    const stopDrag = () => {
-      if (isDragging) {
-        isDragging = false;
-        slider.classList.remove('active');
+      
+      // Se clicou diretamente nos botões, obedece o botão clicado
+      if (e.target.closest('#btnShowAntes')) {
+        updateView(false);
+      } else if (e.target.closest('#btnShowDepois')) {
+        updateView(true);
+      } else {
+        // Clicou no card geral: alterna
+        updateView(!isShowingDepois);
       }
-    };
-
-    container.addEventListener('mousedown', startDrag);
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      handlePointerMove(e.clientX);
     });
 
-    container.addEventListener('touchstart', startDrag, { passive: true });
-    window.addEventListener('touchend', stopDrag);
-    window.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      if (e.touches && e.touches[0]) {
-        handlePointerMove(e.touches[0].clientX);
+    // Suporte a teclado (Acessibilidade Enter / Barra de espaço)
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        userInteracted = true;
+        hideHint();
+        updateView(!isShowingDepois);
       }
-    }, { passive: true });
+    });
 
-    // Botões de Ação para quem não quer arrastar
-    if (btnAntes) {
-      btnAntes.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setPosition(100, true); // Abre 100% da foto de Antes
-      });
-    }
-
-    if (btnDepois) {
-      btnDepois.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setPosition(0, true); // Abre 100% da foto de Depois
-      });
-    }
-
-    if (btnReset) {
-      btnReset.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setPosition(50, true); // Reseta para comparação 50/50
-      });
-    }
-
-    // Demonstração visual automática suave ao rolar até o elemento
+    // Auto-demo cinematográfico: demonstra a transformação suave na primeira visualização
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting && !autoDemoDone) {
-            autoDemoDone = true;
+          if (entry.isIntersecting && !autoDemoExecuted) {
+            autoDemoExecuted = true;
             setTimeout(() => {
-              setPosition(32, true);
-              setTimeout(() => {
-                setPosition(68, true);
+              if (!userInteracted) {
+                updateView(true); // Mostra o Depois
                 setTimeout(() => {
-                  setPosition(50, true);
-                }, 550);
-              }, 550);
-            }, 700);
-            observer.unobserve(container);
+                  if (!userInteracted) {
+                    updateView(false); // Retorna ao Antes
+                  }
+                }, 2200);
+              }
+            }, 1200);
+            observer.unobserve(card);
           }
         });
-      }, { threshold: 0.35 });
-      observer.observe(container);
+      }, { threshold: 0.45 });
+      observer.observe(card);
     }
   }
 
