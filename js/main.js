@@ -250,13 +250,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (previewImovel) previewImovel.innerText = `${orderState.tipo} (${orderState.tipoSub}), ${orderState.metragem} m²`;
     if (previewLocal) previewLocal.innerText = `${orderState.bairro}, Belém`;
     if (previewPrazo) previewPrazo.innerText = orderState.prazo;
-    if (previewNome) previewNome.innerText = orderState.nome || 'Visitante';
+
+    // Mantém 'Ana Souza' como exemplo visual na tela do WhatsApp até o usuário digitar seu próprio nome
+    const displayName = (orderState.nome && orderState.nome.trim()) ? orderState.nome.trim() : 'Ana Souza';
+    if (previewNome) previewNome.innerText = displayName;
 
     const wpFabiolaGreeting = document.getElementById('wpFabiolaGreeting');
     if (wpFabiolaGreeting) {
-      const firstName = (orderState.nome && orderState.nome !== 'Visitante' && orderState.nome !== 'Cliente')
-        ? orderState.nome.trim().split(' ')[0]
-        : 'Visitante';
+      const firstName = displayName.split(' ')[0] || 'Ana';
       wpFabiolaGreeting.innerText = `Oi, ${firstName}!`;
     }
 
@@ -344,22 +345,23 @@ document.addEventListener('DOMContentLoaded', () => {
         nameInput.value = '';
         nameClearedOnce = true;
         if (nameCta) nameCta.style.opacity = '0';
-        orderState.nome = '';
-        updatePhoneMockup();
+        // Não apaga Ana Souza da tela do WhatsApp até que a pessoa comece a digitar!
       } else if (nameCta) {
         nameCta.style.opacity = '0';
       }
     });
 
+    // Atualização AO VIVO (letra por letra em tempo real)
     nameInput.addEventListener('input', (e) => {
       nameClearedOnce = true;
       if (nameCta) nameCta.style.opacity = '0';
-      orderState.nome = e.target.value.trim() || 'Visitante';
+      orderState.nome = e.target.value.trim();
       updatePhoneMockup();
     });
 
     nameInput.addEventListener('blur', () => {
-      if (!nameInput.value.trim() && !nameClearedOnce) {
+      if (!nameInput.value.trim()) {
+        nameClearedOnce = false;
         nameInput.value = 'Ana Souza';
         if (nameCta) nameCta.style.opacity = '1';
         orderState.nome = 'Ana Souza';
