@@ -43,21 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 3. Filtro de Portfólio (Paleta Oficial de Alto Contraste)
+  // 3. Filtro de Portfólio
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
-
-  const activeClasses = ['bg-[#141615]', 'text-white', 'border-[#141615]', 'shadow-md'];
-  const inactiveClasses = ['bg-white', 'text-[#141615]', 'border-stone-300', 'shadow-sm'];
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => {
-        b.classList.remove(...activeClasses);
-        b.classList.add(...inactiveClasses);
+        b.classList.remove('bg-white', 'text-black', 'border-white');
+        b.classList.add('bg-transparent', 'text-stone-300', 'border-stone-700');
       });
-      btn.classList.add(...activeClasses);
-      btn.classList.remove(...inactiveClasses);
+      btn.classList.add('bg-white', 'text-black', 'border-white');
+      btn.classList.remove('bg-transparent', 'text-stone-300', 'border-stone-700');
 
       const filter = btn.getAttribute('data-filter');
 
@@ -72,98 +69,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Comparador Antes e Depois (Modo Estático Executivo - Transição por Botão)
-  const card = document.getElementById('beforeAfterCard');
-  const imgAntes = document.getElementById('imgAntes');
-  const btnShowAntes = document.getElementById('btnShowAntes');
-  const btnShowDepois = document.getElementById('btnShowDepois');
-  const btnQuickToggle = document.getElementById('btnQuickToggle');
-  const badgeState = document.getElementById('badgeState');
-  const badgeStateDot = document.getElementById('badgeStateDot');
-  const badgeStateText = document.getElementById('badgeStateText');
-  const captionDescription = document.getElementById('captionDescription');
+  // 4. Comparador Antes e Depois
+  const container = document.getElementById('beforeAfterContainer');
+  const overlay = document.getElementById('beforeAfterOverlay');
+  const slider = document.getElementById('beforeAfterSlider');
 
-  if (card && imgAntes) {
-    let isShowingDepois = false;
+  if (container && overlay && slider) {
+    let isDragging = false;
 
-    const setView = (showDepois) => {
-      isShowingDepois = showDepois;
-
-      if (showDepois) {
-        // Revela a foto do DEPOIS (Reforma e Habite-se)
-        imgAntes.style.opacity = '0';
-
-        if (btnShowDepois) {
-          btnShowDepois.className = "px-3.5 sm:px-4 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-emerald-600 text-white shadow-md shadow-emerald-900/50 cursor-pointer";
-        }
-        if (btnShowAntes) {
-          btnShowAntes.className = "px-3.5 sm:px-4 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
-        }
-
-        if (badgeState) {
-          badgeState.className = "flex items-center gap-1.5 bg-emerald-600/95 text-white border border-emerald-400/40 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg shadow-emerald-900/30 transition-all duration-300";
-        }
-        if (badgeStateDot) {
-          badgeStateDot.className = "w-2 h-2 rounded-full bg-white";
-        }
-        if (badgeStateText) {
-          badgeStateText.textContent = "Depois (Concluído)";
-        }
-        if (captionDescription) {
-          captionDescription.textContent = "Reforma concluída, ampliação legalizada e Habite-se emitido";
-        }
-      } else {
-        // Retorna à foto do ANTES (Original)
-        imgAntes.style.opacity = '1';
-
-        if (btnShowAntes) {
-          btnShowAntes.className = "px-3.5 sm:px-4 py-1 text-xs font-bold rounded-full transition-all duration-300 bg-[#C5A880] text-stone-950 shadow-md cursor-pointer";
-        }
-        if (btnShowDepois) {
-          btnShowDepois.className = "px-3.5 sm:px-4 py-1 text-xs font-semibold rounded-full transition-all duration-300 text-stone-300 hover:text-white cursor-pointer";
-        }
-
-        if (badgeState) {
-          badgeState.className = "flex items-center gap-1.5 bg-stone-900/90 text-[#C5A880] border border-[#C5A880]/30 text-[11px] sm:text-xs px-3 sm:px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md shadow-lg transition-all duration-300";
-        }
-        if (badgeStateDot) {
-          badgeStateDot.className = "w-2 h-2 rounded-full bg-[#C5A880]";
-        }
-        if (badgeStateText) {
-          badgeStateText.textContent = "Antes (Original)";
-        }
-        if (captionDescription) {
-          captionDescription.textContent = "Imóvel irregular antes da consultoria e projeto de adequação";
-        }
-      }
+    const setPosition = (x) => {
+      const rect = container.getBoundingClientRect();
+      let offsetX = x - rect.left;
+      if (offsetX < 0) offsetX = 0;
+      if (offsetX > rect.width) offsetX = rect.width;
+      const percentage = (offsetX / rect.width) * 100;
+      overlay.style.width = `${percentage}%`;
+      slider.style.left = `${percentage}%`;
     };
 
-    // Ações de clique exclusivas e limpas
-    if (btnShowAntes) {
-      btnShowAntes.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setView(false);
-      });
-    }
-
-    if (btnShowDepois) {
-      btnShowDepois.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setView(true);
-      });
-    }
-
-    if (btnQuickToggle) {
-      btnQuickToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setView(!isShowingDepois);
-      });
-    }
-
-    // Clique direto no card também alterna de forma rápida
-    card.addEventListener('click', () => {
-      setView(!isShowingDepois);
+    slider.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      setPosition(e.clientX);
     });
+
+    // Touch support for mobile
+    slider.addEventListener('touchstart', () => isDragging = true, { passive: true });
+    window.addEventListener('touchend', () => isDragging = false);
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      if (e.touches && e.touches[0]) {
+        setPosition(e.touches[0].clientX);
+      }
+    }, { passive: true });
   }
 
   // 5. Quiz de Regularização
@@ -235,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     metragem: 180,
     prazo: 'começar em até 3 meses',
     bairro: 'Marco',
-    nome: 'Cliente'
+    nome: 'Ana Souza'
   };
 
   const updatePhoneMockup = () => {
@@ -250,15 +189,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (previewImovel) previewImovel.innerText = `${orderState.tipo} (${orderState.tipoSub}), ${orderState.metragem} m²`;
     if (previewLocal) previewLocal.innerText = `${orderState.bairro}, Belém`;
     if (previewPrazo) previewPrazo.innerText = orderState.prazo;
-
-    // Mantém 'Ana Souza' como exemplo visual na tela do WhatsApp até o usuário digitar seu próprio nome
-    const displayName = (orderState.nome && orderState.nome.trim()) ? orderState.nome.trim() : 'Ana Souza';
-    if (previewNome) previewNome.innerText = displayName;
-
-    const wpFabiolaGreeting = document.getElementById('wpFabiolaGreeting');
-    if (wpFabiolaGreeting) {
-      const firstName = displayName.split(' ')[0] || 'Ana';
-      wpFabiolaGreeting.innerText = `Oi, ${firstName}!`;
+    const currentName = (orderState.nome || '').trim();
+    if (previewNome) previewNome.innerText = currentName || 'Seu Nome';
+    
+    const previewGreeting = document.getElementById('wpFabiolaGreeting');
+    if (previewGreeting) {
+      if (currentName) {
+        const firstName = currentName.split(' ')[0];
+        previewGreeting.innerText = `Oi, ${firstName}!`;
+      } else {
+        previewGreeting.innerText = 'Oi! Que bom receber seu contato.';
+      }
     }
 
     const message = `Olá, Fabíola! Vim pelo seu site e montei meu pedido de orçamento:%0A%0A` +
@@ -320,16 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const bairroInput = document.getElementById('orderBairroInput');
-  let bairroClearedOnce = false;
   if (bairroInput) {
-    bairroInput.addEventListener('focus', () => {
-      if (!bairroClearedOnce && bairroInput.value === 'Marco') {
-        bairroInput.value = '';
-        bairroClearedOnce = true;
-      }
-    });
     bairroInput.addEventListener('input', (e) => {
-      bairroClearedOnce = true;
       orderState.bairro = e.target.value || 'Belém';
       updatePhoneMockup();
     });
@@ -337,40 +270,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const nameInput = document.getElementById('orderNameInput');
   const nameCta = document.getElementById('orderNameCta');
-  let nameClearedOnce = false;
 
   if (nameInput) {
-    nameInput.addEventListener('focus', () => {
-      if (!nameClearedOnce && nameInput.value === 'Ana Souza') {
+    const clearAnaSouza = () => {
+      if (nameInput.value.trim() === 'Ana Souza') {
         nameInput.value = '';
-        nameClearedOnce = true;
-        if (nameCta) nameCta.style.opacity = '0';
-        // Não apaga Ana Souza da tela do WhatsApp até que a pessoa comece a digitar!
-      } else if (nameCta) {
-        nameCta.style.opacity = '0';
+        orderState.nome = '';
+        updatePhoneMockup();
       }
+      if (nameCta) nameCta.style.opacity = '0';
+      nameInput.setSelectionRange(0, 0);
+    };
+
+    nameInput.addEventListener('focus', () => {
+      clearAnaSouza();
+      setTimeout(() => {
+        nameInput.setSelectionRange(0, 0);
+      }, 10);
     });
 
-    // Atualização AO VIVO (letra por letra em tempo real)
+    nameInput.addEventListener('click', () => {
+      clearAnaSouza();
+    });
+
     nameInput.addEventListener('input', (e) => {
-      nameClearedOnce = true;
-      if (nameCta) nameCta.style.opacity = '0';
-      orderState.nome = e.target.value.trim();
+      orderState.nome = e.target.value;
+      if (nameCta) {
+        nameCta.style.opacity = e.target.value.trim() ? '0' : '1';
+      }
       updatePhoneMockup();
     });
 
     nameInput.addEventListener('blur', () => {
       if (!nameInput.value.trim()) {
-        nameClearedOnce = false;
         nameInput.value = 'Ana Souza';
-        if (nameCta) nameCta.style.opacity = '1';
         orderState.nome = 'Ana Souza';
+        if (nameCta) nameCta.style.opacity = '1';
         updatePhoneMockup();
       }
     });
   }
 
   updatePhoneMockup();
+
+  // 7. Gaveta de Personalização Interativa para a Fabíola (Demo Customizer)
+  const toggleCustomizerBtn = document.getElementById('toggleCustomizerBtn');
+  const customizerPanel = document.getElementById('customizerPanel');
+  const closeCustomizerBtn = document.getElementById('closeCustomizerBtn');
+
+  if (toggleCustomizerBtn && customizerPanel) {
+    toggleCustomizerBtn.addEventListener('click', () => {
+      customizerPanel.classList.toggle('closed');
+    });
+  }
+
+  if (closeCustomizerBtn && customizerPanel) {
+    closeCustomizerBtn.addEventListener('click', () => {
+      customizerPanel.classList.add('closed');
+    });
+  }
+
+  // Seção Toggles
+  const toggles = [
+    { id: 'toggleHero', target: 'inicio' },
+    { id: 'toggleServicos', target: 'servicos' },
+    { id: 'toggleProjetos', target: 'projetos' },
+    { id: 'toggleQuiz', target: 'regularizacao' },
+    { id: 'toggleOrcamento', target: 'orcamento' },
+    { id: 'toggleComoFunciona', target: 'comofunciona' },
+    { id: 'toggleProfissionais', target: 'profissionais' },
+    { id: 'toggleSobre', target: 'sobre' },
+    { id: 'toggleContato', target: 'contato' },
+  ];
+
+  toggles.forEach(({ id, target }) => {
+    const checkbox = document.getElementById(id);
+    const section = document.getElementById(target);
+    if (checkbox && section) {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          section.style.display = '';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    }
+  });
 
   // ==============================================================
   // RASTREAMENTO INTELIGENTE DE EVENTOS DE CONVERSÃO (TRÁFEGO PAGO)
