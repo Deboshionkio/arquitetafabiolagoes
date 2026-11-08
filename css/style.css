@@ -1,59 +1,68 @@
-/* Fabíola Góes Arquitetura - Estilos Personalizados */
+/* Fabíola Góes Arquiteta - Identidade Visual Oficial */
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+
+/* Fontes Locais Red Hat Display */
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url('../assets/fonts/RedHatDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url('../assets/fonts/RedHatDisplay-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url('../assets/fonts/RedHatDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Red Hat Display';
+  src: url('../assets/fonts/RedHatDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
+  /* Paleta Oficial Fabíola Góes */
+  --fg-brown: #64513D;
+  --fg-sand: #DAD3C7;
+  --fg-sand-light: #F4F1EA;
+  --fg-moss: #5E692E;
+  --fg-terracotta: #9D5E39;
+  --fg-dark: #1E1917;
+  --fg-dark-card: #272220;
+  --fg-dark-subtle: #332D2A;
+  --fg-gold: #D89C17;
+  
   --bg-primary: #FAF8F5;
-  --bg-secondary: #F3EFEA;
   --bg-card: #FFFFFF;
-  --bg-dark: #141615;
-  --bg-dark-card: #1C1E1D;
-  --bg-dark-subtle: #242725;
+  --text-primary: #1E1917;
+  --text-muted: #5C5551;
+  --text-light: #FAF8F5;
+  --text-light-muted: #DAD3C7;
   
-  --text-primary: #191B1A;
-  --text-muted: #666A67;
-  --text-light: #F4F1EA;
-  --text-light-muted: #9Ea3A0;
-  
-  --accent: #C5A880;
-  --accent-hover: #B5966C;
-  --accent-light: #F2E9DE;
-  --accent-dark: #8F7450;
-  
-  --border-light: rgba(0, 0, 0, 0.08);
-  --border-dark: rgba(255, 255, 255, 0.12);
+  --border-light: rgba(100, 81, 61, 0.15);
+  --border-dark: rgba(218, 211, 199, 0.18);
   
   --whatsapp: #25D366;
   --whatsapp-hover: #20BD5A;
 }
 
-html {
-  overflow-x: hidden;
-  max-width: 100vw;
-  width: 100%;
-  box-sizing: border-box;
-  -webkit-text-size-adjust: 100%;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Red Hat Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   overflow-x: hidden;
-  max-width: 100vw;
-  width: 100%;
-  position: relative;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Tipografia de destaque */
-.font-display {
-  font-family: 'Playfair Display', Georgia, serif;
-}
-
-.tracking-architect {
-  letter-spacing: 0.22em;
 }
 
 /* Custom Scrollbar */
@@ -61,86 +70,82 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #141615;
+  background: var(--fg-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333835;
+  background: var(--fg-brown);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: var(--fg-gold);
 }
 
-/* Efeito Glassmorphism Dark & Light */
-.glass-dark {
-  background: rgba(20, 22, 21, 0.75);
+/* Glassmorphism Específico para a Paleta */
+.glass-dark-fg {
+  background: rgba(30, 25, 23, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-dark);
 }
 
-.glass-light {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.glass-sand-fg {
+  background: rgba(244, 241, 234, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-light);
 }
 
-/* Comparador Antes e Depois (Crossfade Card) */
-#beforeAfterCard {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-#beforeAfterCard img {
-  will-change: opacity, transform;
-}
-
-/* Mockup de Celular WhatsApp */
-.phone-mockup {
-  border: 10px solid #222524;
-  border-radius: 40px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4);
-  background: #ECE5DD;
-  overflow: hidden;
+/* Comparador Antes e Depois */
+.before-after-container {
   position: relative;
+  overflow: hidden;
+  user-select: none;
+  touch-action: pan-y;
 }
 
-.phone-mockup-speaker {
-  width: 90px;
-  height: 18px;
-  background: #222524;
+.before-after-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.before-after-overlay {
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.before-after-slider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #FFFFFF;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
+  cursor: ew-resize;
   transform: translateX(-50%);
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  z-index: 20;
+  z-index: 10;
 }
 
-/* Balão do WhatsApp */
-.chat-bubble-out {
-  background-color: #E7FFDB;
-  border-radius: 12px 0 12px 12px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-}
-
-.chat-bubble-in {
-  background-color: #FFFFFF;
-  border-radius: 0 12px 12px 12px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-}
-
-/* Animações sutis */
-@keyframes pulseSubtle {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.animate-pulse-subtle {
-  animation: pulseSubtle 3s infinite ease-in-out;
+.before-after-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  background: var(--fg-brown);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
 }
 
 /* Acordeão de Serviços */
@@ -151,17 +156,19 @@ body {
 }
 
 .accordion-item.active .accordion-content {
-  max-height: 800px;
+  max-height: 900px;
 }
 
 .accordion-item.active .accordion-icon {
   transform: rotate(45deg);
+  background-color: var(--fg-brown);
+  color: #FFFFFF;
 }
 
 /* Range input styling */
 input[type=range] {
   -webkit-appearance: none;
-  background: #E5E0D8;
+  background: #E5DFD7;
   height: 6px;
   border-radius: 3px;
 }
@@ -171,18 +178,103 @@ input[type=range]::-webkit-slider-thumb {
   height: 22px;
   width: 22px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--fg-brown);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   border: 2px solid #FFFFFF;
 }
 
-/* Floating customizer drawer */
-.customizer-panel {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+/* Efeito sutil de flutuação */
+@keyframes floatSubtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
-.customizer-panel.closed {
-  transform: translateX(100%);
-  visibility: hidden;
-  pointer-events: none;
+
+.animate-float {
+  animation: floatSubtle 4s ease-in-out infinite;
+}
+
+/* Tags de destaque */
+.badge-moss {
+  background-color: rgba(94, 105, 46, 0.12);
+  color: #4C5525;
+  border: 1px solid rgba(94, 105, 46, 0.25);
+}
+
+.badge-terracotta {
+  background-color: rgba(157, 94, 57, 0.12);
+  color: #8C4E2B;
+  border: 1px solid rgba(157, 94, 57, 0.25);
+}
+
+.badge-brown {
+  background-color: rgba(100, 81, 61, 0.12);
+  color: var(--fg-brown);
+  border: 1px solid rgba(100, 81, 61, 0.25);
+}
+
+
+/* ============================================================== */
+/* Mockup Realista de Smartphone WhatsApp (Orçamento Interativo) */
+/* ============================================================== */
+.phone-mockup {
+  border: 11px solid #1C1E1D;
+  border-radius: 42px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: #ECE5DD;
+  overflow: hidden;
+  position: relative;
+  min-height: 520px;
+}
+
+/* Alto-falante / Notch superior estilo iPhone */
+.phone-mockup-speaker {
+  width: 90px;
+  height: 18px;
+  background: #1C1E1D;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  z-index: 30;
+}
+
+/* Balão do WhatsApp - Mensagem Enviada (Verde Claro) */
+.chat-bubble-out {
+  background-color: #DCF8C6;
+  border-radius: 12px 12px 2px 12px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.chat-bubble-out::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -6px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #DCF8C6;
+  border-right: 6px solid transparent;
+}
+
+/* Balão do WhatsApp - Mensagem Recebida (Branco) */
+.chat-bubble-in {
+  background-color: #FFFFFF;
+  border-radius: 12px 12px 12px 2px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.chat-bubble-in::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -6px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #FFFFFF;
+  border-left: 6px solid transparent;
 }
